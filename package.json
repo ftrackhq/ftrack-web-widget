@@ -1,0 +1,16 @@
+{
+  "name": "ftrack-web-widget",
+  "version": "1.0.0",
+  "description": "ftrack web widget API library",
+  "main": "ftrackWidget.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/ftrack/ftrack-web-widget.git"
+  },
+  "author": "ftrack",
+  "license": "Apache-2.0",
+  "homepage": "https://bitbucket.org/ftrack/ftrack-web-widget#readme"
+}
