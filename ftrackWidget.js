@@ -56,6 +56,15 @@
         if (onWidgetLoadCallback) {
             onWidgetLoadCallback(content);
         }
+
+        window.dispatchEvent(new CustomEvent(
+            'ftrackWidgetLoad', { detail: { credentials, entity } }
+        ));
+        if (entity) {
+            window.dispatchEvent(new CustomEvent(
+                'ftrackWidgetUpdate', { detail: { entity } }
+            ));
+        }
     }
 
     /** Update entity and call callback whent wigdet is updated. */
@@ -65,6 +74,10 @@
         if (onWidgetUpdateCallback) {
             onWidgetUpdateCallback(content);
         }
+
+        window.dispatchEvent(new CustomEvent(
+            'ftrackWidgetUpdate', { detail: { entity } }
+        ));
     }
 
     /** Handle post messages. */
@@ -96,6 +109,9 @@
      *
      * Specify *onWidgetLoad* to receive a callback when widget has loaded.
      * Specify *onWidgetLoad* to receive a callback when widget has updated.
+     *
+     * Will also fire custom events on the current `window`
+     * ftrackWidgetUpdate, ftrackWidgetLoad
      */
     function initialize(options) {
         options = options || {};
