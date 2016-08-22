@@ -58,11 +58,16 @@
         }
 
         window.dispatchEvent(new CustomEvent(
-            'ftrackWidgetLoad', { detail: { credentials, entity } }
+            'ftrackWidgetLoad', {
+                detail: {
+                    credentials: credentials,
+                    entity: entity
+                }
+            }
         ));
         if (entity) {
             window.dispatchEvent(new CustomEvent(
-                'ftrackWidgetUpdate', { detail: { entity } }
+                'ftrackWidgetUpdate', { detail: { entity: entity } }
             ));
         }
     }
@@ -76,7 +81,7 @@
         }
 
         window.dispatchEvent(new CustomEvent(
-            'ftrackWidgetUpdate', { detail: { entity } }
+            'ftrackWidgetUpdate', { detail: { entity: entity } }
         ));
     }
 
