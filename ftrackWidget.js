@@ -36,6 +36,17 @@
         }, credentials.serverUrl);
     }
 
+    /** Open actions window for selection. */
+    function openActions(selection) {
+        console.debug('Opening actions', selection);
+        window.parent.postMessage({
+            topic: 'ftrack.application.open-actions',
+            data: {
+                selection: selection,
+            }
+        }, credentials.serverUrl);
+    }
+
     /** Navigate web app to *entityType*, *entityId*. */
     function navigate(entityType, entityId) {
         console.debug('Navigating', entityType, entityId);
@@ -88,8 +99,11 @@
     /** Handle post messages. */
     function onPostMessageReceived(event) {
         var content = event.data || {};
-        console.debug('Got "' + content.topic + '" event.', content);
+        if (!content.topic) {
+            return;
+        }
 
+        console.debug('Got "' + content.topic + '" event.', content);
         if (content.topic === 'ftrack.widget.load') {
             onWidgetLoad(content);
         } else if (content.topic === 'ftrack.widget.update') {
@@ -138,6 +152,7 @@
         getEntity: getEntity,
         getCredentials: getCredentials,
         openSidebar: openSidebar,
+        openActions: openActions,
         navigate: navigate,
     };
 
