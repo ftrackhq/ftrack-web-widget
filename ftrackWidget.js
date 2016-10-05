@@ -48,13 +48,15 @@
     }
 
     /** Navigate web app to *entityType*, *entityId*. */
-    function navigate(entityType, entityId) {
+    function navigate(entityType, entityId, module) {
+        module = module || 'project';
         console.debug('Navigating', entityType, entityId);
         window.parent.postMessage({
             topic: 'ftrack.application.navigate',
             data: {
                 type: entityType,
-                id: entityId
+                id: entityId,
+                module: module
             }
         }, credentials.serverUrl);
     }
