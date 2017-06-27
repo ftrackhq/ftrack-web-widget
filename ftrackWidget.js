@@ -123,6 +123,51 @@
         return credentials;
     }
 
+    /** On document clicked forward to parent application */
+    function onDocumentClick(event) {
+        window.parent.postMessage({
+            topic: 'ftrack.application.document-clicked',
+            data: { },
+        }, credentials.serverUrl);
+    }
+
+    /** 
+     * On document keydown forward to parent application.
+     */
+    function onDocumentKeyDown(event) {
+        // Ignore events when focus is in an textarea/input.
+        var tagName = event.target.tagName.toLowerCase();
+        if (['textarea', 'input'].indexOf(tagName) !== -1) {
+            return true;
+        }
+
+        // Copy event data to KeyboardEvent constructor argument.
+        var fields = [
+            'key',
+            'code',
+            'location',
+            'ctrlKey',
+            'shiftKey',
+            'altKey',
+            'metaKey',
+            'repeat',
+            'isComposing',
+            'charCode',
+            'keyCode',
+            'which'
+        ]
+        var eventData = {};
+        for (var i = 0; i < fields.length; i += 1) {
+            var field = fields[i];
+            eventData[field] = event[field];
+        }
+
+        window.parent.postMessage({
+            topic: 'ftrack.application.document-keydown',
+            data: eventData
+        }, credentials.serverUrl);
+    }
+
     /**
      * Initialize module with *options*.
      *
@@ -146,6 +191,10 @@
         // Listen to post messages.
         window.addEventListener('message', onPostMessageReceived, false);
         window.parent.postMessage({ topic: 'ftrack.widget.ready' }, '*');
+
+        // Forward click and keydown events to parent.
+        document.addEventListener('click', onDocumentClick);
+        document.addEventListener('keydown', onDocumentKeyDown);
     }
 
     /** Return public API */
