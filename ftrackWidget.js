@@ -47,6 +47,14 @@
         }, credentials.serverUrl);
     }
 
+    /** Close action window for current widget. */
+    function closeWidget() {
+        console.debug('Close widget');
+        window.parent.postMessage({
+            topic: 'ftrack.application.close-widget'
+        }, credentials.serverUrl);
+    }
+
     /** Navigate web app to *entityType*, *entityId*. */
     function navigate(entityType, entityId, module) {
         module = module || 'project';
@@ -205,6 +213,7 @@
         openSidebar: openSidebar,
         openActions: openActions,
         navigate: navigate,
+        closeWidget: closeWidget,
     };
 
 }));
