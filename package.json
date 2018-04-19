@@ -1,6 +1,6 @@
 {
   "name": "ftrack-web-widget",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ftrack web widget API library",
   "main": "ftrackWidget.js",
   "scripts": {
