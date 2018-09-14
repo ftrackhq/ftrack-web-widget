@@ -55,6 +55,17 @@
         }, credentials.serverUrl);
     }
 
+    /** Close action window for current widget. */
+    function openPreview(componentId) {
+        console.debug('Open preview', componentId);
+        window.parent.postMessage({
+            topic: 'ftrack.application.open-preview',
+            data: {
+                componentId: componentId 
+            }
+        }, credentials.serverUrl);
+    }
+
     /** Navigate web app to *entityType*, *entityId*. */
     function navigate(entityType, entityId, module) {
         module = module || 'project';
@@ -212,6 +223,7 @@
         getCredentials: getCredentials,
         openSidebar: openSidebar,
         openActions: openActions,
+        openPreview: openPreview,
         navigate: navigate,
         closeWidget: closeWidget,
     };
