@@ -55,7 +55,7 @@
         }, credentials.serverUrl);
     }
 
-    /** Close action window for current widget. */
+    /** Open preview for *componentId*. */
     function openPreview(componentId) {
         console.debug('Open preview', componentId);
         window.parent.postMessage({
