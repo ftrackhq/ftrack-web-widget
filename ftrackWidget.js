@@ -188,6 +188,18 @@
     }
 
     /**
+     * On widget hashchange, forward information to parent application.
+     */
+    function onHashChange(event) {
+        window.parent.postMessage({
+            topic: 'ftrack.widget.hashchange',
+            data: {
+                hash: window.location.hash,
+            },
+        }, credentials.serverUrl);
+    }
+
+    /**
      * Initialize module with *options*.
      *
      * Should be called after `DOMContentLoaded` has fired.
@@ -214,6 +226,9 @@
         // Forward click and keydown events to parent.
         document.addEventListener('click', onDocumentClick);
         document.addEventListener('keydown', onDocumentKeyDown);
+
+        // Forward hashchange events to parent
+        window.addEventListener('hashchange', onHashChange);
     }
 
     /** Return public API */
