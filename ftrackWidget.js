@@ -19,6 +19,7 @@
      *
      * Handle communication with the ftrack web application.
      */
+    var targetOrigin = null;
     var credentials = null;
     var entity = null;
     var onWidgetLoadCallback, onWidgetUpdateCallback;
@@ -33,7 +34,7 @@
                 type: entityType,
                 id: entityId
             }
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /** Open actions window for selection. */
@@ -44,7 +45,7 @@
             data: {
                 selection: selection,
             }
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /** Close action window for current widget. */
@@ -52,7 +53,7 @@
         console.debug('Close widget');
         window.parent.postMessage({
             topic: 'ftrack.application.close-widget'
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /** Open preview for *componentId*. */
@@ -63,7 +64,7 @@
             data: {
                 componentId: componentId 
             }
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /** Navigate web app to *entityType*, *entityId*. */
@@ -77,12 +78,13 @@
                 id: entityId,
                 module: module
             }
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /** Update credentials and entity, call callback when wigdet loads. */
     function onWidgetLoad(content) {
         console.debug('Widget loaded', content);
+        targetOrigin = content.data.targetOrigin;
         credentials = content.data.credentials;
         entity = content.data.entity;
         if (onWidgetLoadCallback) {
@@ -147,7 +149,7 @@
         window.parent.postMessage({
             topic: 'ftrack.application.document-clicked',
             data: { },
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /** 
@@ -184,7 +186,7 @@
         window.parent.postMessage({
             topic: 'ftrack.application.document-keydown',
             data: eventData
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /**
@@ -196,7 +198,7 @@
             data: {
                 hash: window.location.hash,
             },
-        }, credentials.serverUrl);
+        }, targetOrigin || credentials.serverUrl);
     }
 
     /**
