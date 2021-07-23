@@ -37,7 +37,12 @@
         }, targetOrigin || credentials.serverUrl);
     }
 
-    /** Open actions window for selection. */
+    /** 
+     * Open actions window for *selection*.
+     * 
+     * Selection should be an array of objects containing
+     * id and type, e.g.: [{ type: 'Project', id: '<Project id>' }]
+     **/
     function openActions(selection) {
         console.debug('Opening actions', selection);
         window.parent.postMessage({
