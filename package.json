@@ -1,7 +1,7 @@
 {
-  "name": "ftrack-web-widget",
+  "name": "@ftrack/web-widget",
   "version": "1.3.0",
-  "description": "ftrack web widget API library",
+  "description": "ftrack web widget SDK",
   "main": "ftrackWidget.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
