@@ -6,7 +6,7 @@ module.exports = defineConfig({
     minify: false,
     sourcemap: true,
     lib: {
-      entry: path.resolve(__dirname, "ftrackWidget.js"),
+      entry: path.resolve(__dirname, "src", "index.js"),
       name: "ftrackWidget",
       fileName: (format) => `ftrackWidget.${format}.js`,
     },
