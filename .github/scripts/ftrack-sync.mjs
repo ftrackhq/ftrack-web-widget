@@ -86,6 +86,7 @@ Last change: ${new Date().toISOString().replace("T", " ").slice(0, -8)} GMT`;
 }
 
 export async function getNotesRequestBody(PR) {
+  if (!PR.body) return [];
   const taskIds = getTaskIdsAndNoteIdsFromBody(PR.body, PR.html_url);
   if (taskIds.length === 0) return [];
   const { existingIds, newIds } = await groupIntoExistingAndNewNoteIds(taskIds);
