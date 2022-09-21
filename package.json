@@ -5,6 +5,12 @@
   "description": "ftrack web widget SDK",
   "main": "./dist/ftrackWidget.umd.js",
   "module": "./dist/ftrackWidget.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/ftrackWidget.js",
+      "require": "./dist/ftrackWidget.umd.cjs"
+    }
+  },
   "scripts": {
     "lint": "eslint . && prettier -c .",
     "test": "yarn lint",
