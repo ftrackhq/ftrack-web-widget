@@ -1,15 +1,23 @@
 # ftrack web widget
 
-This small library encapsulates some logic which can be used to build custom
-dashboard widgets for ftrack.
+This small library encapsulates some logic which can be used to build custom dashboard widgets for ftrack.
 
-The library exposes an UMD module, accessible as `ftrackWidget` on the global
-(`window`) object.
+## Installation
 
-To use the library, define two functions `onWidgetLoad` and `onWidgetUpdate`
-and initialize the library once the document is ready::
+We recommend installing and bundling with NPM:
 
 ```javascript
+npm install @ftrack/web-widget
+```
+
+## Usage
+
+To use the library, define two functions `onWidgetLoad` and `onWidgetUpdate`
+and initialize the library once the document is ready:
+
+```javascript
+import ftrackWidget from "@ftrack/web-widget";
+
 /** Initialize widget once DOM has loaded. */
 window.addEventListener("DOMContentLoaded", function onDomContentLoaded() {
   ftrackWidget.initialize({
@@ -18,6 +26,8 @@ window.addEventListener("DOMContentLoaded", function onDomContentLoaded() {
   });
 });
 ```
+
+If used as an UMD module, the library exposes `ftrackWidget` on the global (`window`) object.
 
 For a more complete example, see [ftrack JavaScript API: Basic Widget Example](https://bitbucket.org/ftrack/ftrack-javascript-api-example-basic-widget)
 
