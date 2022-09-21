@@ -16,11 +16,11 @@ To use the library, define two functions `onWidgetLoad` and `onWidgetUpdate`
 and initialize the library once the document is ready:
 
 ```javascript
-import ftrackWidget from "@ftrack/web-widget";
+import { initialize } from "@ftrack/web-widget";
 
 /** Initialize widget once DOM has loaded. */
 window.addEventListener("DOMContentLoaded", function onDomContentLoaded() {
-  ftrackWidget.initialize({
+  initialize({
     onWidgetLoad: onWidgetLoad,
     onWidgetUpdate: onWidgetUpdate,
   });
