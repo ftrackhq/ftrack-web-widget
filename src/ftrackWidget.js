@@ -162,9 +162,12 @@ function onDocumentClick(event) {
  * On document keydown forward to parent application.
  */
 function onDocumentKeyDown(event) {
-  // Ignore events when focus is in an textarea/input.
+  // Ignore events when focus is in an textarea/input/contenteditable.
   const tagName = event.target.tagName.toLowerCase();
-  if (["textarea", "input"].indexOf(tagName) !== -1) {
+  if (
+    ["textarea", "input"].indexOf(tagName) !== -1 ||
+    event.target.isContentEditable
+  ) {
     return true;
   }
 
