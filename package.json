@@ -8,7 +8,7 @@
   "exports": {
     ".": {
       "import": "./dist/ftrackWidget.js",
-      "require": "./dist/ftrackWidget.umd.cjs"
+      "require": "./dist/ftrackWidget.umd.js"
     }
   },
   "scripts": {
