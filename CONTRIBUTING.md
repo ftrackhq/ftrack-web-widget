@@ -26,5 +26,5 @@ Locally:
 On Github:
 
 - Create a new PR from your branch, and get someone to approve it, then merge.
-- [Create a new release](https://github.com/ftrackhq/javascript-api/releases/new), pointing to your tag. Generate new release notes based on commit history and clean it up a bit. Choose whether or not it should be a pre-release (your tag should reflect this by appending a beta tag, e.g. `1.0.0-beta.1`)
-- Click publish, and make sure the Github action passes. Then you should see a new release on [NPM](https://www.npmjs.com/package/@ftrack/api).
+- [Create a new release](https://github.com/ftrackhq/ftrack-web-widget/releases/new), pointing to your tag. Generate new release notes based on commit history and clean it up a bit. Choose whether or not it should be a pre-release (your tag should reflect this by appending a beta tag, e.g. `1.0.0-beta.1`)
+- Click publish, and make sure the Github action passes. Then you should see a new release on [NPM](https://www.npmjs.com/package/@ftrack/web-widget).
