@@ -11,6 +11,9 @@
       "require": "./dist/ftrackWidget.umd.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "eslint . && prettier -c .",
     "test": "yarn lint",
