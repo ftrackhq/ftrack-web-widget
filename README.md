@@ -31,4 +31,4 @@ If used as an UMD module, the library exposes `ftrackWidget` on the global (`win
 
 For a more complete example, see [ftrack JavaScript API: Basic Widget Example](https://bitbucket.org/ftrack/ftrack-javascript-api-example-basic-widget)
 
-More information on the API used is available in the documentation `Building dashboard widgets <http://ftrack.rtd.ftrack.com/en/stable/developing/building_dashboard_widgets.html>`\_
+More information on the API used is available in the documentation [Creating a custom widget with React](https://help.ftrack.com/en/articles/4490918-creating-a-custom-widget-with-react).

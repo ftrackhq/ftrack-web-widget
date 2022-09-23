@@ -7,10 +7,13 @@
   "module": "./dist/ftrackWidget.es.js",
   "exports": {
     ".": {
-      "import": "./dist/ftrackWidget.js",
+      "import": "./dist/ftrackWidget.es.js",
       "require": "./dist/ftrackWidget.umd.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "eslint . && prettier -c .",
     "test": "yarn lint",
