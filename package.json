@@ -14,6 +14,7 @@
   "files": [
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "lint": "eslint . && prettier -c .",
     "test": "yarn lint",
