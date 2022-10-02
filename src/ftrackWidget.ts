@@ -33,7 +33,9 @@ let entity: EntityType;
 let onWidgetLoadCallback: (content: MessageContent) => void,
   onWidgetUpdateCallback: (content: MessageContent) => void;
 
-/** Open sidebar for *entityType*, *entityId*. */
+/**
+ * Open sidebar for *entityType*, *entityId*.
+ */
 export function openSidebar(entityType: string, entityId: string) {
   console.debug("Opening sidebar", entityType, entityId);
   window.parent.postMessage(
@@ -50,9 +52,9 @@ export function openSidebar(entityType: string, entityId: string) {
 
 /**
  * Open actions window for *selection*.
- *
- **/
-export function openActions(selection: Array<{ type: string; id: string }>) {
+ * @param selection List of entities to open actions for.
+ */
+export function openActions(selection: EntityType[]) {
   console.debug("Opening actions", selection);
   window.parent.postMessage(
     {
@@ -65,7 +67,9 @@ export function openActions(selection: Array<{ type: string; id: string }>) {
   );
 }
 
-/** Close action window for current widget. */
+/**
+ * Close action window for current widget.
+ */
 export function closeWidget() {
   console.debug("Close widget");
   window.parent.postMessage(
@@ -76,7 +80,9 @@ export function closeWidget() {
   );
 }
 
-/** Open preview for *componentId*. */
+/**
+ * Open preview for *componentId*.
+ */
 export function openPreview(componentId: string) {
   console.debug("Open preview", componentId);
   window.parent.postMessage(
@@ -90,7 +96,9 @@ export function openPreview(componentId: string) {
   );
 }
 
-/** Navigate web app to *entityType*, *entityId*. */
+/**
+ * Navigate web app to *entityType*, *entityId*.
+ */
 export function navigate(entityType: string, entityId: string, module: string) {
   module = module || "project";
   console.debug("Navigating", entityType, entityId);
@@ -107,7 +115,9 @@ export function navigate(entityType: string, entityId: string, module: string) {
   );
 }
 
-/** Update credentials and entity, call callback when widget loads. */
+/**
+ * Update credentials and entity, call callback when widget loads.
+ */
 function onWidgetLoad(content: MessageContent) {
   console.debug("Widget loaded", content);
   targetOrigin = content.data.targetOrigin;
@@ -132,7 +142,9 @@ function onWidgetLoad(content: MessageContent) {
   }
 }
 
-/** Update entity and call callback whent wigdet is updated. */
+/**
+ * Update entity and call callback whent wigdet is updated.
+ */
 function onWidgetUpdate(content: MessageContent) {
   console.debug("Widget updated", content);
   entity = content.data.entity;
@@ -145,7 +157,9 @@ function onWidgetUpdate(content: MessageContent) {
   );
 }
 
-/** Handle post messages. */
+/**
+ * Handle post messages.
+ */
 function onPostMessageReceived(event: MessageEvent) {
   const content = event.data || {};
   if (!content.topic) {
@@ -160,17 +174,23 @@ function onPostMessageReceived(event: MessageEvent) {
   }
 }
 
-/** Return current entity. */
+/**
+ * Return current entity.
+ */
 export function getEntity() {
   return entity;
 }
 
-/** Return API credentials. */
+/**
+ * Return API credentials.
+ */
 export function getCredentials() {
   return credentials;
 }
 
-/** On document clicked forward to parent application */
+/**
+ * On document clicked forward to parent application
+ */
 function onDocumentClick() {
   window.parent.postMessage(
     {
@@ -184,7 +204,7 @@ function onDocumentClick() {
 /**
  * On document keydown forward to parent application.
  */
-function onDocumentKeyDown(event: KeyboardEvent): void {
+function onDocumentKeyDown(event: KeyboardEvent) {
   // Ignore events when focus is in an textarea/input/contenteditable.
   const target = event.target as HTMLElement;
   const tagName = target?.tagName.toLowerCase();
@@ -240,22 +260,25 @@ function onHashChange() {
   );
 }
 
+/** Options for {@link initialize} */
+type IInitializeOptions = {
+  /** Specify to receive a callback when widget has loaded. */
+  onWidgetLoad?: (content: MessageContent) => void;
+  /** Specify to receive a callback when widget has updated. */
+  onWidgetUpdate?: (content: MessageContent) => void;
+};
+
 /**
  * Initialize module with *options*.
  *
  * Should be called after `DOMContentLoaded` has fired.
  *
- * Specify *onWidgetLoad* to receive a callback when widget has loaded.
- * Specify *onWidgetUpdate* to receive a callback when widget has updated.
- *
  * Will also fire custom events on the current `window`
  * ftrackWidgetUpdate, ftrackWidgetLoad
+ *
+ * @param options Options to initialize with.
  */
-export function initialize(options: {
-  onWidgetLoad: (content: MessageContent) => void;
-  onWidgetUpdate: (content: MessageContent) => void;
-}) {
-  options = options || {};
+export function initialize(options: IInitializeOptions = {}) {
   if (options.onWidgetLoad) {
     onWidgetLoadCallback = options.onWidgetLoad;
   }
