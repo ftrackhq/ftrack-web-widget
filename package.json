@@ -16,7 +16,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "lint": "eslint . && prettier -c .",
+    "lint": "tsc && eslint . && prettier -c .",
     "test": "yarn lint",
     "build": "vite build",
     "prepack": "yarn build",
