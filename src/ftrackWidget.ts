@@ -261,7 +261,7 @@ function onHashChange() {
 }
 
 /** Options for {@link initialize} */
-type IInitializeOptions = {
+type InitializeOptions = {
   /** Specify to receive a callback when widget has loaded. */
   onWidgetLoad?: (content: MessageContent) => void;
   /** Specify to receive a callback when widget has updated. */
@@ -278,7 +278,7 @@ type IInitializeOptions = {
  *
  * @param options Options to initialize with.
  */
-export function initialize(options: IInitializeOptions = {}) {
+export function initialize(options: InitializeOptions = {}) {
   if (options.onWidgetLoad) {
     onWidgetLoadCallback = options.onWidgetLoad;
   }
