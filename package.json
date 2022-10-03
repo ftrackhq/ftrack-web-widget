@@ -5,6 +5,7 @@
   "description": "ftrack web widget SDK",
   "main": "./dist/ftrackWidget.umd.js",
   "module": "./dist/ftrackWidget.es.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/ftrackWidget.es.js",
