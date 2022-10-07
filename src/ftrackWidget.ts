@@ -4,7 +4,7 @@
  * Handle communication with the ftrack web application.
  */
 
-type MessageContent = {
+interface MessageContent {
   topic: "ftrack.widget.load" | "ftrack.widget.update";
   data: {
     credentials: {
@@ -17,18 +17,19 @@ type MessageContent = {
     targetOrigin?: string;
   };
   theme: "light" | "dark";
-};
+}
 
-type MessageEvent = {
+interface MessageEvent {
   data: MessageContent;
-};
+}
 
-// type ActionType = "create" | "update" | "delete";
+interface EntityType {
+  id: string;
+  type: string;
+}
 
-type EntityType = { id: string; type: string };
-
-let targetOrigin: string | undefined;
-let credentials: { serverUrl: string } = { serverUrl: "" };
+let targetOrigin: string;
+let credentials: { serverUrl: string };
 let entity: EntityType;
 let onWidgetLoadCallback: (content: MessageContent) => void,
   onWidgetUpdateCallback: (content: MessageContent) => void;
@@ -120,7 +121,9 @@ export function navigate(entityType: string, entityId: string, module: string) {
  */
 function onWidgetLoad(content: MessageContent) {
   console.debug("Widget loaded", content);
-  targetOrigin = content.data.targetOrigin;
+  if (content.data.targetOrigin) {
+    targetOrigin = content.data.targetOrigin;
+  }
   credentials = content.data.credentials;
   entity = content.data.entity;
   if (onWidgetLoadCallback) {
@@ -216,7 +219,7 @@ function onDocumentKeyDown(event: KeyboardEvent) {
   }
 
   // Copy event data to KeyboardEvent constructor argument.
-  const fields = [
+  const fields: (keyof KeyboardEvent)[] = [
     "key",
     "code",
     "location",
@@ -229,11 +232,10 @@ function onDocumentKeyDown(event: KeyboardEvent) {
     "charCode",
     "keyCode",
     "which",
-  ] as (keyof KeyboardEvent)[];
+  ];
 
-  const eventData: Partial<KeyboardEvent> = fields.reduce(
-    (data, field) => ({ [field]: event[field], ...data }),
-    {}
+  const eventData: Partial<KeyboardEvent> = Object.fromEntries(
+    fields.map((field) => [field, event[field]])
   );
 
   window.parent.postMessage(
@@ -261,12 +263,12 @@ function onHashChange() {
 }
 
 /** Options for {@link initialize} */
-type InitializeOptions = {
+interface InitializeOptions {
   /** Specify to receive a callback when widget has loaded. */
   onWidgetLoad?: (content: MessageContent) => void;
   /** Specify to receive a callback when widget has updated. */
   onWidgetUpdate?: (content: MessageContent) => void;
-};
+}
 
 /**
  * Initialize module with *options*.
