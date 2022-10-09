@@ -4,7 +4,7 @@
  * Handle communication with the ftrack web application.
  */
 
-interface MessageContent {
+export interface MessageContent {
   topic: "ftrack.widget.load" | "ftrack.widget.update";
   data: {
     credentials: {
@@ -19,11 +19,11 @@ interface MessageContent {
   theme: "light" | "dark";
 }
 
-interface MessageEvent {
+export interface MessageEvent {
   data: MessageContent;
 }
 
-interface EntityType {
+export interface EntityType {
   id: string;
   type: string;
 }
@@ -209,7 +209,9 @@ function onDocumentClick() {
  */
 function onDocumentKeyDown(event: KeyboardEvent) {
   // Ignore events when focus is in an textarea/input/contenteditable.
-  const target = event.target as HTMLElement;
+  const target = event.target as HTMLElement | null;
+  if (!target) return;
+
   const tagName = target?.tagName.toLowerCase();
   if (
     ["textarea", "input"].indexOf(tagName) !== -1 ||
@@ -219,7 +221,7 @@ function onDocumentKeyDown(event: KeyboardEvent) {
   }
 
   // Copy event data to KeyboardEvent constructor argument.
-  const fields: (keyof KeyboardEvent)[] = [
+  const fields: Array<keyof KeyboardEvent> = [
     "key",
     "code",
     "location",
@@ -263,7 +265,7 @@ function onHashChange() {
 }
 
 /** Options for {@link initialize} */
-interface InitializeOptions {
+export interface InitializeOptions {
   /** Specify to receive a callback when widget has loaded. */
   onWidgetLoad?: (content: MessageContent) => void;
   /** Specify to receive a callback when widget has updated. */
