@@ -13,7 +13,7 @@ export interface MessageContent {
       csrfToken: string;
       serverUrl: string;
     };
-    entity: EntityType;
+    entity: Entity;
     targetOrigin?: string;
   };
   theme: "light" | "dark";
@@ -23,21 +23,24 @@ export interface MessageEvent {
   data: MessageContent;
 }
 
-export interface EntityType {
+export interface Entity {
   id: string;
   type: string;
 }
 
 let targetOrigin: string;
 let credentials: { serverUrl: string };
-let entity: EntityType;
+let entity: Entity;
 let onWidgetLoadCallback: (content: MessageContent) => void,
   onWidgetUpdateCallback: (content: MessageContent) => void;
 
 /**
  * Open sidebar for *entityType*, *entityId*.
  */
-export function openSidebar(entityType: string, entityId: string) {
+export function openSidebar(
+  entityType: Entity["type"],
+  entityId: Entity["id"]
+) {
   console.debug("Opening sidebar", entityType, entityId);
   window.parent.postMessage(
     {
@@ -55,7 +58,7 @@ export function openSidebar(entityType: string, entityId: string) {
  * Open actions window for *selection*.
  * @param selection List of entities to open actions for.
  */
-export function openActions(selection: EntityType[]) {
+export function openActions(selection: Entity[]) {
   console.debug("Opening actions", selection);
   window.parent.postMessage(
     {
@@ -209,8 +212,8 @@ function onDocumentClick() {
  */
 function onDocumentKeyDown(event: KeyboardEvent) {
   // Ignore events when focus is in an textarea/input/contenteditable.
-  const target = event.target as HTMLElement | null;
-  if (!target) return;
+  const target = event.target;
+  if (!target || !(target instanceof HTMLElement)) return;
 
   const tagName = target?.tagName.toLowerCase();
   if (
