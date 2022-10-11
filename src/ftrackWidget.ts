@@ -37,10 +37,7 @@ let onWidgetLoadCallback: (content: MessageContent) => void,
 /**
  * Open sidebar for *entityType*, *entityId*.
  */
-export function openSidebar(
-  entityType: Entity["type"],
-  entityId: Entity["id"]
-) {
+export function openSidebar(entityType: string, entityId: string) {
   console.debug("Opening sidebar", entityType, entityId);
   window.parent.postMessage(
     {
@@ -215,7 +212,7 @@ function onDocumentKeyDown(event: KeyboardEvent) {
   const target = event.target;
   if (!target || !(target instanceof HTMLElement)) return;
 
-  const tagName = target?.tagName.toLowerCase();
+  const tagName = target.tagName.toLowerCase();
   if (
     ["textarea", "input"].indexOf(tagName) !== -1 ||
     target.isContentEditable
