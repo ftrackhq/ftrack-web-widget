@@ -4,11 +4,7 @@
  * Handle communication with the ftrack web application.
  */
 
-export interface WidgetMessage {
-  topic: string;
-}
-
-export interface WidgetLoadMessage extends WidgetMessage {
+export interface WidgetLoadMessage {
   topic: "ftrack.widget.load";
   data: {
     credentials: {
@@ -23,13 +19,15 @@ export interface WidgetLoadMessage extends WidgetMessage {
   };
 }
 
-export interface WidgetUpdateMessage extends WidgetMessage {
+export interface WidgetUpdateMessage {
   topic: "ftrack.widget.update";
   data: {
     entity: Entity;
     targetOrigin?: string;
   };
 }
+
+type WidgetMessage = WidgetLoadMessage | WidgetUpdateMessage;
 
 export interface Entity {
   id: string;
@@ -172,7 +170,7 @@ function onWidgetUpdate(content: WidgetUpdateMessage) {
  * Handle post messages.
  */
 function onPostMessageReceived(event: MessageEvent) {
-  const content = event.data || {};
+  const content = (event.data || {}) as WidgetMessage;
   if (!content.topic) {
     return;
   }
