@@ -1,12 +1,13 @@
-const path = require("path");
-const { defineConfig } = require("vite");
+import path from "path";
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
-module.exports = defineConfig({
+export default defineConfig({
   build: {
     minify: false,
     sourcemap: true,
     lib: {
-      entry: path.resolve(__dirname, "src", "index.js"),
+      entry: path.resolve(__dirname, "src", "index.ts"),
       name: "ftrackWidget",
       fileName: (format) => `ftrackWidget.${format}.js`,
     },
@@ -18,4 +19,5 @@ module.exports = defineConfig({
       plugins: [],
     },
   },
+  plugins: [dts()],
 });

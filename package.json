@@ -5,6 +5,7 @@
   "description": "ftrack web widget SDK",
   "main": "./dist/ftrackWidget.umd.js",
   "module": "./dist/ftrackWidget.es.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/ftrackWidget.es.js",
@@ -16,7 +17,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "lint": "eslint . && prettier -c .",
+    "lint": "tsc && eslint . && prettier -c .",
     "test": "yarn lint",
     "build": "vite build",
     "prepack": "yarn build",
@@ -34,6 +35,8 @@
     "eslint-config-react-app": "^7.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
-    "vite": "^3.1.3"
+    "typescript": "^4.8.4",
+    "vite": "^3.1.3",
+    "vite-plugin-dts": "^1.6.4"
   }
 }

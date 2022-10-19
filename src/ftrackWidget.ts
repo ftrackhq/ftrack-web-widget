@@ -3,13 +3,49 @@
  *
  * Handle communication with the ftrack web application.
  */
-let targetOrigin = null;
-let credentials = null;
-let entity = null;
-let onWidgetLoadCallback, onWidgetUpdateCallback;
 
-/** Open sidebar for *entityType*, *entityId*. */
-export function openSidebar(entityType, entityId) {
+export interface WidgetMessage {
+  topic: string;
+}
+
+export interface WidgetLoadMessage extends WidgetMessage {
+  topic: "ftrack.widget.load";
+  data: {
+    credentials: {
+      apiUser: string;
+      apiKey: string;
+      csrfToken: string;
+      serverUrl: string;
+    };
+    theme: "light" | "dark";
+    entity: Entity;
+    targetOrigin?: string;
+  };
+}
+
+export interface WidgetUpdateMessage extends WidgetMessage {
+  topic: "ftrack.widget.update";
+  data: {
+    entity: Entity;
+    targetOrigin?: string;
+  };
+}
+
+export interface Entity {
+  id: string;
+  type: string;
+}
+
+let targetOrigin: string;
+let credentials: { serverUrl: string };
+let entity: Entity;
+let onWidgetLoadCallback: (content: WidgetLoadMessage) => void,
+  onWidgetUpdateCallback: (content: WidgetUpdateMessage) => void;
+
+/**
+ * Open sidebar for *entityType*, *entityId*.
+ */
+export function openSidebar(entityType: string, entityId: string) {
   console.debug("Opening sidebar", entityType, entityId);
   window.parent.postMessage(
     {
@@ -25,11 +61,9 @@ export function openSidebar(entityType, entityId) {
 
 /**
  * Open actions window for *selection*.
- *
- * Selection should be an array of objects containing
- * id and type, e.g.: [{ type: 'Project', id: '<Project id>' }]
- **/
-export function openActions(selection) {
+ * @param selection List of entities to open actions for.
+ */
+export function openActions(selection: Entity[]) {
   console.debug("Opening actions", selection);
   window.parent.postMessage(
     {
@@ -42,7 +76,9 @@ export function openActions(selection) {
   );
 }
 
-/** Close action window for current widget. */
+/**
+ * Close action window for current widget.
+ */
 export function closeWidget() {
   console.debug("Close widget");
   window.parent.postMessage(
@@ -53,8 +89,10 @@ export function closeWidget() {
   );
 }
 
-/** Open preview for *componentId*. */
-export function openPreview(componentId) {
+/**
+ * Open preview for *componentId*.
+ */
+export function openPreview(componentId: string) {
   console.debug("Open preview", componentId);
   window.parent.postMessage(
     {
@@ -67,8 +105,10 @@ export function openPreview(componentId) {
   );
 }
 
-/** Navigate web app to *entityType*, *entityId*. */
-export function navigate(entityType, entityId, module) {
+/**
+ * Navigate web app to *entityType*, *entityId*.
+ */
+export function navigate(entityType: string, entityId: string, module: string) {
   module = module || "project";
   console.debug("Navigating", entityType, entityId);
   window.parent.postMessage(
@@ -84,10 +124,14 @@ export function navigate(entityType, entityId, module) {
   );
 }
 
-/** Update credentials and entity, call callback when wigdet loads. */
-function onWidgetLoad(content) {
+/**
+ * Update credentials and entity, call callback when widget loads.
+ */
+function onWidgetLoad(content: WidgetLoadMessage) {
   console.debug("Widget loaded", content);
-  targetOrigin = content.data.targetOrigin;
+  if (content.data.targetOrigin) {
+    targetOrigin = content.data.targetOrigin;
+  }
   credentials = content.data.credentials;
   entity = content.data.entity;
   if (onWidgetLoadCallback) {
@@ -104,13 +148,15 @@ function onWidgetLoad(content) {
   );
   if (entity) {
     window.dispatchEvent(
-      new CustomEvent("ftrackWidgetUpdate", { detail: { entity: entity } })
+      new CustomEvent("ftrackWidgetUpdate", { detail: { entity } })
     );
   }
 }
 
-/** Update entity and call callback whent wigdet is updated. */
-function onWidgetUpdate(content) {
+/**
+ * Update entity and call callback whent wigdet is updated.
+ */
+function onWidgetUpdate(content: WidgetUpdateMessage) {
   console.debug("Widget updated", content);
   entity = content.data.entity;
   if (onWidgetUpdateCallback) {
@@ -118,12 +164,14 @@ function onWidgetUpdate(content) {
   }
 
   window.dispatchEvent(
-    new CustomEvent("ftrackWidgetUpdate", { detail: { entity: entity } })
+    new CustomEvent("ftrackWidgetUpdate", { detail: { entity } })
   );
 }
 
-/** Handle post messages. */
-function onPostMessageReceived(event) {
+/**
+ * Handle post messages.
+ */
+function onPostMessageReceived(event: MessageEvent) {
   const content = event.data || {};
   if (!content.topic) {
     return;
@@ -137,18 +185,24 @@ function onPostMessageReceived(event) {
   }
 }
 
-/** Return current entity. */
+/**
+ * Return current entity.
+ */
 export function getEntity() {
   return entity;
 }
 
-/** Return API credentials. */
+/**
+ * Return API credentials.
+ */
 export function getCredentials() {
   return credentials;
 }
 
-/** On document clicked forward to parent application */
-function onDocumentClick(event) {
+/**
+ * On document clicked forward to parent application
+ */
+function onDocumentClick() {
   window.parent.postMessage(
     {
       topic: "ftrack.application.document-clicked",
@@ -161,18 +215,21 @@ function onDocumentClick(event) {
 /**
  * On document keydown forward to parent application.
  */
-function onDocumentKeyDown(event) {
+function onDocumentKeyDown(event: KeyboardEvent) {
   // Ignore events when focus is in an textarea/input/contenteditable.
-  const tagName = event.target.tagName.toLowerCase();
+  const target = event.target;
+  if (!target || !(target instanceof HTMLElement)) return;
+
+  const tagName = target.tagName.toLowerCase();
   if (
     ["textarea", "input"].indexOf(tagName) !== -1 ||
-    event.target.isContentEditable
+    target.isContentEditable
   ) {
-    return true;
+    return;
   }
 
   // Copy event data to KeyboardEvent constructor argument.
-  const fields = [
+  const fields: Array<keyof KeyboardEvent> = [
     "key",
     "code",
     "location",
@@ -186,11 +243,10 @@ function onDocumentKeyDown(event) {
     "keyCode",
     "which",
   ];
-  const eventData = {};
-  for (let i = 0; i < fields.length; i += 1) {
-    const field = fields[i];
-    eventData[field] = event[field];
-  }
+
+  const eventData: Partial<KeyboardEvent> = Object.fromEntries(
+    fields.map((field) => [field, event[field]])
+  );
 
   window.parent.postMessage(
     {
@@ -204,7 +260,7 @@ function onDocumentKeyDown(event) {
 /**
  * On widget hashchange, forward information to parent application.
  */
-function onHashChange(event) {
+function onHashChange() {
   window.parent.postMessage(
     {
       topic: "ftrack.widget.hashchange",
@@ -216,19 +272,25 @@ function onHashChange(event) {
   );
 }
 
+/** Options for {@link initialize} */
+export interface InitializeOptions {
+  /** Specify to receive a callback when widget has loaded. */
+  onWidgetLoad?: (content: WidgetLoadMessage) => void;
+  /** Specify to receive a callback when widget has updated. */
+  onWidgetUpdate?: (content: WidgetUpdateMessage) => void;
+}
+
 /**
  * Initialize module with *options*.
  *
  * Should be called after `DOMContentLoaded` has fired.
  *
- * Specify *onWidgetLoad* to receive a callback when widget has loaded.
- * Specify *onWidgetLoad* to receive a callback when widget has updated.
- *
  * Will also fire custom events on the current `window`
  * ftrackWidgetUpdate, ftrackWidgetLoad
+ *
+ * @param options Options to initialize with.
  */
-export function initialize(options) {
-  options = options || {};
+export function initialize(options: InitializeOptions = {}) {
   if (options.onWidgetLoad) {
     onWidgetLoadCallback = options.onWidgetLoad;
   }
