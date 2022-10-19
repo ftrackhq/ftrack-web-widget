@@ -4,8 +4,12 @@
  * Handle communication with the ftrack web application.
  */
 
-export interface MessageContent {
-  topic: "ftrack.widget.load" | "ftrack.widget.update";
+export interface WidgetMessage {
+  topic: string;
+}
+
+export interface WidgetLoadMessage extends WidgetMessage {
+  topic: "ftrack.widget.load";
   data: {
     credentials: {
       apiUser: string;
@@ -13,14 +17,18 @@ export interface MessageContent {
       csrfToken: string;
       serverUrl: string;
     };
+    theme: "light" | "dark";
     entity: Entity;
     targetOrigin?: string;
   };
-  theme: "light" | "dark";
 }
 
-export interface MessageEvent {
-  data: MessageContent;
+export interface WidgetUpdateMessage extends WidgetMessage {
+  topic: "ftrack.widget.update";
+  data: {
+    entity: Entity;
+    targetOrigin?: string;
+  };
 }
 
 export interface Entity {
@@ -31,8 +39,8 @@ export interface Entity {
 let targetOrigin: string;
 let credentials: { serverUrl: string };
 let entity: Entity;
-let onWidgetLoadCallback: (content: MessageContent) => void,
-  onWidgetUpdateCallback: (content: MessageContent) => void;
+let onWidgetLoadCallback: (content: WidgetLoadMessage) => void,
+  onWidgetUpdateCallback: (content: WidgetUpdateMessage) => void;
 
 /**
  * Open sidebar for *entityType*, *entityId*.
@@ -119,7 +127,7 @@ export function navigate(entityType: string, entityId: string, module: string) {
 /**
  * Update credentials and entity, call callback when widget loads.
  */
-function onWidgetLoad(content: MessageContent) {
+function onWidgetLoad(content: WidgetLoadMessage) {
   console.debug("Widget loaded", content);
   if (content.data.targetOrigin) {
     targetOrigin = content.data.targetOrigin;
@@ -148,7 +156,7 @@ function onWidgetLoad(content: MessageContent) {
 /**
  * Update entity and call callback whent wigdet is updated.
  */
-function onWidgetUpdate(content: MessageContent) {
+function onWidgetUpdate(content: WidgetUpdateMessage) {
   console.debug("Widget updated", content);
   entity = content.data.entity;
   if (onWidgetUpdateCallback) {
@@ -267,9 +275,9 @@ function onHashChange() {
 /** Options for {@link initialize} */
 export interface InitializeOptions {
   /** Specify to receive a callback when widget has loaded. */
-  onWidgetLoad?: (content: MessageContent) => void;
+  onWidgetLoad?: (content: WidgetLoadMessage) => void;
   /** Specify to receive a callback when widget has updated. */
-  onWidgetUpdate?: (content: MessageContent) => void;
+  onWidgetUpdate?: (content: WidgetUpdateMessage) => void;
 }
 
 /**
