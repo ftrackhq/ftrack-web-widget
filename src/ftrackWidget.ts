@@ -270,6 +270,7 @@ function onHashChange() {
   );
 }
 
+
 /** Options for {@link initialize} */
 export interface InitializeOptions {
   /** Specify to receive a callback when widget has loaded. */
@@ -277,6 +278,22 @@ export interface InitializeOptions {
   /** Specify to receive a callback when widget has updated. */
   onWidgetUpdate?: (content: WidgetUpdateMessage) => void;
 }
+
+
+/** Get current ftrack style */
+export function getStyle() {
+  let query = window.location.search.substring(1);
+  let parameters = query.split("&");
+  let style = 'light'
+  for (let i=0; i<parameters.length; i++) {
+    let parameter = parameters[i].split("=");
+    if (parameter[0] === 'theme') {
+      style =  parameter[1];
+    }
+  }
+  return style;
+}
+
 
 /**
  * Initialize module with *options*.
