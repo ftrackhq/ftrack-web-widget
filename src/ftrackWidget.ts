@@ -282,11 +282,11 @@ export interface InitializeOptions {
 
 /** Get current ftrack style */
 export function getStyle() {
-  let query = window.location.search.substring(1);
-  let parameters = query.split("&");
+  const query = window.location.search.substring(1);
+  const parameters = query.split("&");
   let style = 'light'
   for (let i=0; i<parameters.length; i++) {
-    let parameter = parameters[i].split("=");
+    const parameter = parameters[i].split("=");
     if (parameter[0] === 'theme') {
       style =  parameter[1];
     }
