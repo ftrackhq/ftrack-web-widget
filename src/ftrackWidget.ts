@@ -278,8 +278,8 @@ export interface InitializeOptions {
   onWidgetUpdate?: (content: WidgetUpdateMessage) => void;
 }
 
-/** Get current ftrack style */
-export function getStyle() {
+/** Get current ftrack theme */
+export function getTheme() {
   const parameters = new URLSearchParams(window.location.search);
   return parameters.get("theme");
 }
