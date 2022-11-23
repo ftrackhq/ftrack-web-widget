@@ -280,8 +280,8 @@ export interface InitializeOptions {
 
 /** Get current ftrack style */
 export function getStyle() {
-  const parameters = new URLSearchParams(window.location.search)
-  return parameters.get('theme')
+  const parameters = new URLSearchParams(window.location.search);
+  return parameters.get("theme");
 }
 
 /**
