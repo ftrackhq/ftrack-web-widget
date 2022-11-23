@@ -279,7 +279,7 @@ export interface InitializeOptions {
 }
 
 /** Get current ftrack theme */
-export function getTheme() {
+export function getActiveTheme() {
   const parameters = new URLSearchParams(window.location.search);
   return parameters.get("theme");
 }
