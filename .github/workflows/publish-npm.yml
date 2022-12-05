@@ -12,4 +12,5 @@ jobs:
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
       npmToken: ${{ secrets.NPM_TOKEN }}
+    with:
       packageUrl: https://www.npmjs.com/package/@ftrack/web-widget
