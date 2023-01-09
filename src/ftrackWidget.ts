@@ -7,12 +7,7 @@
 export interface WidgetLoadMessage {
   topic: "ftrack.widget.load";
   data: {
-    credentials: {
-      apiUser: string;
-      apiKey: string;
-      csrfToken: string;
-      serverUrl: string;
-    };
+    credentials: CredentialsType;
     theme: "light" | "dark";
     entity: Entity;
     targetOrigin?: string;
@@ -33,9 +28,20 @@ export interface Entity {
   id: string;
   type: string;
 }
+export interface CredentialsType {
+  serverUrl: string;
+  apiUser: string;
+  apiKey: string;
+  csrfToken: string;
+}
 
 let targetOrigin: string;
-let credentials: { serverUrl: string };
+let credentials: CredentialsType = {
+  serverUrl: "",
+  apiUser: "",
+  apiKey: "",
+  csrfToken: "",
+};
 let entity: Entity;
 let onWidgetLoadCallback: (content: WidgetLoadMessage) => void,
   onWidgetUpdateCallback: (content: WidgetUpdateMessage) => void;
