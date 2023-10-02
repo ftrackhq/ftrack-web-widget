@@ -9,5 +9,18 @@
   "rangeStrategy": "update-lockfile",
   "schedule": [
     "every 3 months on the first day of the month"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        ".*"
+      ],
+      "groupName": "Dependencies",
+      "schedule": [
+        "every 3 months on the first day of the month"
+      ],
+      "automerge": false,
+      "enabled": true
+    }
   ]
 }
