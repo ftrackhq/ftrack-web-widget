@@ -59,7 +59,7 @@ export function openSidebar(entityType: string, entityId: string) {
         id: entityId,
       },
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
@@ -76,7 +76,7 @@ export function openActions(selection: Entity[]) {
         selection: selection,
       },
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
@@ -89,7 +89,7 @@ export function closeWidget() {
     {
       topic: "ftrack.application.close-widget",
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
@@ -105,7 +105,7 @@ export function openPreview(componentId: string) {
         componentId: componentId,
       },
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
@@ -124,7 +124,7 @@ export function navigate(entityType: string, entityId: string, module: string) {
         module: module,
       },
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
@@ -148,11 +148,11 @@ function onWidgetLoad(content: WidgetLoadMessage) {
         credentials: credentials,
         entity: entity,
       },
-    })
+    }),
   );
   if (entity) {
     window.dispatchEvent(
-      new CustomEvent("ftrackWidgetUpdate", { detail: { entity } })
+      new CustomEvent("ftrackWidgetUpdate", { detail: { entity } }),
     );
   }
 }
@@ -168,7 +168,7 @@ function onWidgetUpdate(content: WidgetUpdateMessage) {
   }
 
   window.dispatchEvent(
-    new CustomEvent("ftrackWidgetUpdate", { detail: { entity } })
+    new CustomEvent("ftrackWidgetUpdate", { detail: { entity } }),
   );
 }
 
@@ -212,7 +212,7 @@ function onDocumentClick() {
       topic: "ftrack.application.document-clicked",
       data: {},
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
@@ -249,7 +249,7 @@ function onDocumentKeyDown(event: KeyboardEvent) {
   ];
 
   const eventData: Partial<KeyboardEvent> = Object.fromEntries(
-    fields.map((field) => [field, event[field]])
+    fields.map((field) => [field, event[field]]),
   );
 
   window.parent.postMessage(
@@ -257,7 +257,7 @@ function onDocumentKeyDown(event: KeyboardEvent) {
       topic: "ftrack.application.document-keydown",
       data: eventData,
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
@@ -272,7 +272,7 @@ function onHashChange() {
         hash: window.location.hash,
       },
     },
-    targetOrigin || credentials.serverUrl
+    targetOrigin || credentials.serverUrl,
   );
 }
 
