@@ -2,14 +2,14 @@
   "name": "@ftrack/web-widget",
   "packageManager": "yarn@3.6.3",
   "description": "ftrack web widget SDK",
-  "main": "./dist/ftrackWidget.umd.js",
-  "module": "./dist/ftrackWidget.es.js",
+  "main": "./dist/ftrackWidget.umd.cjs",
+  "module": "./dist/ftrackWidget.es.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/ftrackWidget.es.js",
-      "require": "./dist/ftrackWidget.umd.js"
+      "import": "./dist/ftrackWidget.es.mjs",
+      "require": "./dist/ftrackWidget.umd.cjs"
     }
   },
   "files": [
