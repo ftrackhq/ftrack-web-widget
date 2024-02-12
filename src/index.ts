@@ -1,1 +1,1 @@
-export * from "./ftrackWidget";
+export * from "./ftrackWidget.js";
