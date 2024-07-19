@@ -42,6 +42,9 @@ let credentials: CredentialsType = {
   apiKey: "",
   csrfToken: "",
 };
+
+const origin = window.top !== window.self ? window.parent : window;
+
 let entity: Entity;
 let onWidgetLoadCallback: (content: WidgetLoadMessage) => void,
   onWidgetUpdateCallback: (content: WidgetUpdateMessage) => void;
@@ -51,7 +54,7 @@ let onWidgetLoadCallback: (content: WidgetLoadMessage) => void,
  */
 export function openSidebar(entityType: string, entityId: string) {
   console.debug("Opening sidebar", entityType, entityId);
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.application.open-sidebar",
       data: {
@@ -69,7 +72,7 @@ export function openSidebar(entityType: string, entityId: string) {
  */
 export function openActions(selection: Entity[]) {
   console.debug("Opening actions", selection);
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.application.open-actions",
       data: {
@@ -85,7 +88,7 @@ export function openActions(selection: Entity[]) {
  */
 export function closeWidget() {
   console.debug("Close widget");
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.application.close-widget",
     },
@@ -98,7 +101,7 @@ export function closeWidget() {
  */
 export function openPreview(componentId: string) {
   console.debug("Open preview", componentId);
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.application.open-preview",
       data: {
@@ -115,7 +118,7 @@ export function openPreview(componentId: string) {
 export function navigate(entityType: string, entityId: string, module: string) {
   module = module || "project";
   console.debug("Navigating", entityType, entityId);
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.application.navigate",
       data: {
@@ -207,7 +210,7 @@ export function getCredentials() {
  * On document clicked forward to parent application
  */
 function onDocumentClick() {
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.application.document-clicked",
       data: {},
@@ -252,7 +255,7 @@ function onDocumentKeyDown(event: KeyboardEvent) {
     fields.map((field) => [field, event[field]]),
   );
 
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.application.document-keydown",
       data: eventData,
@@ -265,7 +268,7 @@ function onDocumentKeyDown(event: KeyboardEvent) {
  * On widget hashchange, forward information to parent application.
  */
 function onHashChange() {
-  window.parent.postMessage(
+  origin.postMessage(
     {
       topic: "ftrack.widget.hashchange",
       data: {
@@ -310,7 +313,7 @@ export function initialize(options: InitializeOptions = {}) {
 
   // Listen to post messages.
   window.addEventListener("message", onPostMessageReceived, false);
-  window.parent.postMessage({ topic: "ftrack.widget.ready" }, "*");
+  origin.postMessage({ topic: "ftrack.widget.ready" }, "*");
 
   // Forward click and keydown events to parent.
   document.addEventListener("click", onDocumentClick);
