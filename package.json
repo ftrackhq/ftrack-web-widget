@@ -1,6 +1,6 @@
 {
   "name": "@ftrack/web-widget",
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.2",
   "description": "ftrack web widget SDK",
   "main": "./dist/ftrackWidget.umd.js",
   "module": "./dist/ftrackWidget.es.js",
