@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ftrackhq/ftrack-web-widget.git"
+    "url": "git+https://github.com/ftrackhq/ftrack-web-widget"
   },
   "author": "ftrack",
   "license": "Apache-2.0",
