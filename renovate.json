@@ -1,26 +1,16 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "enabledManagers": [
-    "npm"
-  ],
+  "extends": ["config:recommended"],
+  "enabledManagers": ["npm"],
   "rangeStrategy": "update-lockfile",
-  "schedule": [
-    "every 3 months on the first day of the month"
-  ],
+  "schedule": ["every 3 months on the first day of the month"],
   "packageRules": [
     {
       "groupName": "Dependencies",
-      "schedule": [
-        "every 3 months on the first day of the month"
-      ],
+      "schedule": ["every 3 months on the first day of the month"],
       "automerge": false,
       "enabled": true,
-      "matchPackageNames": [
-        "/.*/"
-      ]
+      "matchPackageNames": ["/.*/"]
     }
   ]
 }
