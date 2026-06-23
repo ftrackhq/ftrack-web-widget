@@ -1,3 +1,4 @@
 renovate.json
 dist
 CODEOWNERS
+pnpm-lock.yaml
